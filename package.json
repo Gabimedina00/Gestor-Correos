@@ -1,0 +1,21 @@
+{
+  "name": "gestor-correos",
+  "version": "1.0.0",
+  "description": "Gestor de correos electrónicos en TypeScript con POO y Programación Funcional: contactos, bandejas, envío, borradores, búsqueda y filtros dinámicos combinables. Desarrollado con TDD y GitHub Actions. AE4 · Paradigmas y Lenguajes de Programación II · UCP 2026.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabimedina00/Gestor-Correos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Gabimedina00/Gestor-Correos/issues"
+  },
+  "homepage": "https://github.com/Gabimedina00/Gestor-Correos#readme"
+}

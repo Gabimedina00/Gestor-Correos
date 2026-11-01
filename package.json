@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/Gabimedina00/Gestor-Correos/issues"
   },
-  "homepage": "https://github.com/Gabimedina00/Gestor-Correos#readme"
+  "homepage": "https://github.com/Gabimedina00/Gestor-Correos#readme",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^5.0.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
 }

@@ -1,5 +1,5 @@
-import {describe, expect, it} from "Vitest";
-import {Contacto} from "../src/Contacto";
+import {describe, expect, it} from "vitest";
+import {Contacto} from "../src/Contacto.js";
 
 describe("Contacto", ()=>{
     it("guarda el nombre y el email", ()=>{
@@ -8,4 +8,9 @@ describe("Contacto", ()=>{
     expect(contacto.getNombre()).toBe("Gabriel Medina");
     expect(contacto.getEmail()).toBe("gabmedina@ucp.edu.ar")
  });
+ 
+    it("email inválido", ()=>{
+    expect(() => new Contacto("Gabriel", "gabrielmed@ucp.edu.ar")).toThrow();
+
 });
+   

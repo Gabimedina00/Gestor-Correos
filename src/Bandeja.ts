@@ -14,4 +14,9 @@ export class Bandeja {
   public getCorreos(): Correo[] {
     return this.correos;
   }
+
+  // Agrega un nuevo correo a la bandeja
+  public agregarCorreo(correo: Correo): void {
+    this.correos.push(correo);
+  }
 }

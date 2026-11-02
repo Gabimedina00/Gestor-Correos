@@ -38,4 +38,15 @@ describe ("Correo", () => {
 
         expect(correo.getDestinatarios()).toEqual([gabriel]);
     });
+
+      // Esperamos que solo sea válido para enviar si tiene asunto y al menos un destinatario.
+    it("solo es válido para enviar con asunto y destinatarios", () => {
+        const completo = new Correo(gabriel, [tiago], "Examen", "Texto");
+        const sinAsunto = new Correo(gabriel, [tiago], "   ", "Texto");
+        const sinDestinatarios = new Correo(gabriel, [], "Examen", "Texto");
+
+        expect(completo.esValidoParaEnviar()).toBe(true);
+        expect(sinAsunto.esValidoParaEnviar()).toBe(false);
+        expect(sinDestinatarios.esValidoParaEnviar()).toBe(false);
+    });
 });

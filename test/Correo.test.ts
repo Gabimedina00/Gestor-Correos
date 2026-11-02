@@ -19,4 +19,12 @@ describe ("Correo", () => {
         expect(correo.esLeido()).toBe(false);
         expect(correo.esFavorito()).toBe(false);
     });
+
+    //Esperamos dos correos que tengan ids distintos, aunque creemos uno detras de otro.
+    it("Cada correo tiene su propio id", () => {
+        const primero = new Correo(gabriel, [tiago], "Hola","primer correo");
+        const segundo = new Correo(tiago, [gabriel], "Re: Hola","Segundo correo");
+       
+        expect(primero.getId()).not.toBe(segundo.getId());
+    });
 });

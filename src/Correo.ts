@@ -18,17 +18,19 @@ export class Correo {
         //toma el numero actual y lo incrementa.
         this.id = Correo.siguienteId++;
         this.remitente = remitente;
-        this.destinatarios = destinatarios;
         this.asunto = asunto;
         this.cuerpo = cuerpo;
+        //guarda una copia, así cambiar el array original no afecta al correo.
+       this.destinatarios = [...destinatarios];
 
     }
 
     getRemitente(): Contacto { return this.remitente; }
-    getDestinatarios(): Contacto[] { return this.destinatarios; }
     getAsunto(): string { return this.asunto; }
     getCuerpo(): string { return this.cuerpo; }
     esLeido(): boolean { return this.leido; }
     esFavorito(): boolean { return this.favorito; }
     getId(): number { return this.id; }
+    //devuelve una copia (doble encapsulamiento).
+    getDestinatarios(): Contacto[] { return [...this.destinatarios]; }
 }

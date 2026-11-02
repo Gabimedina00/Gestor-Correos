@@ -2,7 +2,6 @@ import { Correo } from "./Correo.js";
 
 export class Bandeja {
   private nombre: string;
-  // Almacena los correos de la bandeja
   private correos: Correo[];
 
   constructor(nombre: string) {
@@ -10,13 +9,20 @@ export class Bandeja {
     this.correos = [];
   }
 
-  // Devuelve la lista de correos actuales
   public getCorreos(): Correo[] {
     return this.correos;
   }
 
-  // Agrega un nuevo correo a la bandeja
   public agregarCorreo(correo: Correo): void {
     this.correos.push(correo);
+  }
+
+  // Mueve el correo de esta bandeja a la bandeja de destino
+  public moverCorreo(correo: Correo, destino: Bandeja): void {
+    const index = this.correos.indexOf(correo);
+    if (index !== -1) {
+      this.correos.splice(index, 1); // Lo saca del origen
+      destino.agregarCorreo(correo); // Lo agrega al destino
+    }
   }
 }

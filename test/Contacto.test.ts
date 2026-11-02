@@ -13,4 +13,10 @@ describe("Contacto", () => {
         expect(() => new Contacto("Gabriel", "gabrielmeducp.edu.ar")).toThrow();
 
     });
+
+    it("Guarda el email en minúsculas y sin espacios", () =>{
+        const contacto = new Contacto("Gabriel Medina", " GABMEDINA@UCP.EDU.AR ");
+
+        expect(contacto.getEmail()).toBe("gabmedina@ucp.edu.ar");
+    });
 });  

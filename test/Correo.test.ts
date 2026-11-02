@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
-import {Correo} from "../src/Correo.js";
 import {Contacto} from "../src/Contacto.js";
+import {Correo} from "../src/Correo.js";
 
 //Contactos de prueba para los tests.
 const gabriel = new Contacto("Gabriel", "gabriel@ucp.edu.ar");
@@ -26,5 +26,16 @@ describe ("Correo", () => {
         const segundo = new Correo(tiago, [gabriel], "Re: Hola","Segundo correo");
        
         expect(primero.getId()).not.toBe(segundo.getId());
+    });
+
+    // Esperamos que cambiar la lista desde afuera no modifique los destinatarios del correo.
+    it("los destinatarios no se pueden modificar desde afuera", () => {
+        const destinatarios = [gabriel];
+        const correo = new Correo(tiago, destinatarios, "Aviso", "Texto");
+
+        destinatarios.push(tiago);
+        correo.getDestinatarios().push(tiago);
+
+        expect(correo.getDestinatarios()).toEqual([gabriel]);
     });
 });

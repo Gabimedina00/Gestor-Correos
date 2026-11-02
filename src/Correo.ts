@@ -21,7 +21,7 @@ export class Correo {
         this.asunto = asunto;
         this.cuerpo = cuerpo;
         //guarda una copia, así cambiar el array original no afecta al correo.
-       this.destinatarios = [...destinatarios];
+        this.destinatarios = [...destinatarios];
 
     }
 
@@ -33,4 +33,8 @@ export class Correo {
     getId(): number { return this.id; }
     //devuelve una copia (doble encapsulamiento).
     getDestinatarios(): Contacto[] { return [...this.destinatarios]; }
+    //RF-01 los datos obligatorios se validan cuando corresponde, al enviar
+    esValidoParaEnviar(): boolean {
+        return this.asunto.trim().length > 0 && this.destinatarios.length > 0;
+    }
 }

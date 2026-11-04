@@ -10,7 +10,7 @@ export class Bandeja {
   }
 
   public getCorreos(): Correo[] {
-    return this.correos;
+    return [...this.correos];
   }
 
   public agregarCorreo(correo: Correo): void {

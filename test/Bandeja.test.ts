@@ -31,6 +31,18 @@ describe("RF-06: Bandejas y clasificación", () => {
     expect(correos).toHaveLength(1);
     expect(correos[0]).toBe(correoMock);
   });
+  it("getCorreos debe devolver una copia de la lista original", () => {
+    const bandeja = new Bandeja("Entrada");
+    const correoMock = { asunto: "Test Copia" } as any;
+    bandeja.agregarCorreo(correoMock);
+    
+    // Obtenemos los correos e intentamos modificar el arreglo desde afuera
+    const copiaCorreos = bandeja.getCorreos();
+    copiaCorreos.push({ asunto: "Correo Intruso" } as any);
+    
+    // La bandeja original no debería verse afectada por el push de arriba
+    expect(bandeja.getCorreos()).toHaveLength(1);
+  });
 // Se espera que un correo pueda moverse de una bandeja de origen a una de destino.
   it("debe permitir mover un correo de una bandeja a otra", () => {
     const bandejaOrigen = new Bandeja("Entrada");

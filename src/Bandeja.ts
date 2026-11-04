@@ -13,8 +13,10 @@ export class Bandeja {
     return [...this.correos];
   }
 
-  public agregarCorreo(correo: Correo): void {
-    this.correos.push(correo);
+ public agregarCorreo(correo: Correo): void {
+    if (!this.correos.includes(correo)) {
+      this.correos.push(correo);
+    }
   }
 
   // Mueve el correo de esta bandeja a la bandeja de destino

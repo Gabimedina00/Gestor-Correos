@@ -31,6 +31,7 @@ describe("RF-06: Bandejas y clasificación", () => {
     expect(correos).toHaveLength(1);
     expect(correos[0]).toBe(correoMock);
   });
+
   it("getCorreos debe devolver una copia de la lista original", () => {
     const bandeja = new Bandeja("Entrada");
     const correoMock = { asunto: "Test Copia" } as any;
@@ -43,7 +44,20 @@ describe("RF-06: Bandejas y clasificación", () => {
     // La bandeja original no debería verse afectada por el push de arriba
     expect(bandeja.getCorreos()).toHaveLength(1);
   });
-// Se espera que un correo pueda moverse de una bandeja de origen a una de destino.
+
+  it("no debe permitir agregar un correo que ya existe en la bandeja", () => {
+    const bandeja = new Bandeja("Entrada");
+    const correoMock = { asunto: "Prueba de duplicado" } as any;
+    
+    // Agregamos el mismo correo dos veces
+    bandeja.agregarCorreo(correoMock);
+    bandeja.agregarCorreo(correoMock);
+    
+    // Verificamos que la bandeja solo tenga 1 correo guardado, no 2
+    expect(bandeja.getCorreos()).toHaveLength(1);
+  });
+
+  // Se espera que un correo pueda moverse de una bandeja de origen a una de destino.
   it("debe permitir mover un correo de una bandeja a otra", () => {
     const bandejaOrigen = new Bandeja("Entrada");
     const bandejaDestino = new Bandeja("Eliminados");

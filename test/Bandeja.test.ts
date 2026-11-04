@@ -57,6 +57,13 @@ describe("RF-06: Bandejas y clasificación", () => {
     expect(bandeja.getCorreos()).toHaveLength(1);
   });
 
+  it("debe lanzar un error si se intenta crear una bandeja con un nombre no permitido", () => {
+    // Envolvemos la creación en una función anónima para que expect pueda atrapar el error
+    expect(() => {
+      new Bandeja("Spam");
+    }).toThrowError("Nombre de bandeja no permitido");
+  });
+  
   // Se espera que un correo pueda moverse de una bandeja de origen a una de destino.
   it("debe permitir mover un correo de una bandeja a otra", () => {
     const bandejaOrigen = new Bandeja("Entrada");
@@ -65,7 +72,8 @@ describe("RF-06: Bandejas y clasificación", () => {
 
     // Preparamos el estado inicial agregando el correo al origen
     bandejaOrigen.agregarCorreo(correoMock);
-
+    
+   
     // Ejecutamos el método que vamos a crear para mover el correo
     bandejaOrigen.moverCorreo(correoMock, bandejaDestino);
 

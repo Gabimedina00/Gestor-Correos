@@ -5,6 +5,12 @@ export class Bandeja {
   private correos: Correo[];
 
   constructor(nombre: string) {
+    const nombresPermitidos = ["Entrada", "Enviados", "Borradores", "Eliminados"];
+    
+    if (!nombresPermitidos.includes(nombre)) {
+      throw new Error("Nombre de bandeja no permitido");
+    }
+    
     this.nombre = nombre;
     this.correos = [];
   }

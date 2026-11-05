@@ -53,4 +53,21 @@ describe("S1-06: Envío de Correos", () => {
     expect(bandejaEnviados.getCorreos()).toHaveLength(1);
     expect(bandejaBorradores.getCorreos()).toHaveLength(0);
   });
+
+
+  it("no debe duplicar el correo en Enviados si se intenta enviar dos veces", () => {
+    const bandejaEnviados = new Bandeja("Enviados");
+    const correoMock = { 
+      asunto: "Doble click por error", 
+      esValidoParaEnviar: () => true 
+    } as any;
+
+    // Intentamos enviar el mismo correo dos veces seguidas
+    enviarCorreo(correoMock, bandejaEnviados);
+    enviarCorreo(correoMock, bandejaEnviados);
+
+    // Verificamos que en la bandeja solo esté guardado una vez
+    expect(bandejaEnviados.getCorreos()).toHaveLength(1);
+  })
 });
+

@@ -81,4 +81,21 @@ describe("RF-06: Bandejas y clasificación", () => {
     expect(bandejaEliminados.getCorreos()).toHaveLength(1);
     expect(bandejaEliminados.getCorreos()[0]).toBe(correoMock);
   });
+ it("debe permitir restaurar un correo desde Eliminados a otra bandeja", () => {
+    const bandejaEliminados = new Bandeja("Eliminados");
+    const bandejaEntrada = new Bandeja("Entrada");
+    const correoMock = { asunto: "Factura recuperada" } as any;
+
+    // Estado inicial: el correo está en la papelera
+    bandejaEliminados.agregarCorreo(correoMock);
+    
+    // Ejecutamos el método que vamos a crear
+    bandejaEliminados.restaurarCorreo(correoMock, bandejaEntrada);
+
+    // Verificamos el movimiento
+    expect(bandejaEliminados.getCorreos()).toHaveLength(0);
+    expect(bandejaEntrada.getCorreos()).toHaveLength(1);
+    expect(bandejaEntrada.getCorreos()[0]).toBe(correoMock);
+  });
+
 });

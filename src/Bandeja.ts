@@ -31,6 +31,13 @@ export class Bandeja {
     
     this.moverCorreo(correo, bandejaEliminados);
   }
+  public restaurarCorreo(correo: Correo, destino: Bandeja): void {
+    if (this.nombre !== "Eliminados") {
+      throw new Error("Solo se pueden restaurar correos desde la bandeja de Eliminados");
+    }
+    
+    this.moverCorreo(correo, destino);
+  }
   // Mueve el correo de esta bandeja a la bandeja de destino
   public moverCorreo(correo: Correo, destino: Bandeja): void {
     const index = this.correos.indexOf(correo);

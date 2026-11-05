@@ -24,7 +24,13 @@ export class Bandeja {
       this.correos.push(correo);
     }
   }
-
+ public eliminarCorreo(correo: Correo, bandejaEliminados: Bandeja): void {
+    if (bandejaEliminados.nombre !== "Eliminados") {
+      throw new Error("El destino debe ser la bandeja de Eliminados");
+    }
+    
+    this.moverCorreo(correo, bandejaEliminados);
+  }
   // Mueve el correo de esta bandeja a la bandeja de destino
   public moverCorreo(correo: Correo, destino: Bandeja): void {
     const index = this.correos.indexOf(correo);

@@ -65,21 +65,20 @@ describe("RF-06: Bandejas y clasificación", () => {
   });
   
   // Se espera que un correo pueda moverse de una bandeja de origen a una de destino.
-  it("debe permitir mover un correo de una bandeja a otra", () => {
-    const bandejaOrigen = new Bandeja("Entrada");
-    const bandejaDestino = new Bandeja("Eliminados");
-    const correoMock = { asunto: "Factura", cuerpo: "Mes de Octubre" } as any;
+ it("debe permitir eliminar un correo moviéndolo a la bandeja Eliminados", () => {
+    const bandejaEntrada = new Bandeja("Entrada");
+    const bandejaEliminados = new Bandeja("Eliminados");
+    const correoMock = { asunto: "Promo de locos" } as any;
 
-    // Preparamos el estado inicial agregando el correo al origen
-    bandejaOrigen.agregarCorreo(correoMock);
+    // Estado inicial
+    bandejaEntrada.agregarCorreo(correoMock);
     
-   
-    // Ejecutamos el método que vamos a crear para mover el correo
-    bandejaOrigen.moverCorreo(correoMock, bandejaDestino);
+    // Ejecutamos el método que vamos a crear
+    bandejaEntrada.eliminarCorreo(correoMock, bandejaEliminados);
 
-    // Verificamos que se haya quitado del origen y agregado al destino
-    expect(bandejaOrigen.getCorreos()).toHaveLength(0);
-    expect(bandejaDestino.getCorreos()).toHaveLength(1);
-    expect(bandejaDestino.getCorreos()[0]).toBe(correoMock);
+    // Verificamos que se movió correctamente
+    expect(bandejaEntrada.getCorreos()).toHaveLength(0);
+    expect(bandejaEliminados.getCorreos()).toHaveLength(1);
+    expect(bandejaEliminados.getCorreos()[0]).toBe(correoMock);
   });
 });

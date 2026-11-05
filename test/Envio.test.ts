@@ -6,7 +6,11 @@ import { enviarCorreo } from "../src/Envio.js";
 describe("S1-06: Envío de Correos", () => {
   it("debe procesar el envío de un correo y guardarlo en la bandeja", () => {
     const bandejaEnviados = new Bandeja("Enviados");
-    const correoMock = { asunto: "Hola", cuerpo: "Prueba de envío" } as any;
+    const correoMock = { 
+      asunto: "Hola", 
+      cuerpo: "Prueba de envío",
+      esValidoParaEnviar: () => true 
+    } as any;
     
     // Ejecutamos la función de envío que vamos a programar
     enviarCorreo(correoMock, bandejaEnviados);
@@ -15,5 +19,18 @@ describe("S1-06: Envío de Correos", () => {
     const correos = bandejaEnviados.getCorreos();
     expect(correos).toHaveLength(1);
     expect(correos[0]).toBe(correoMock);
+  });
+  it("debe lanzar un error si el correo no es válido para enviar", () => {
+    const bandejaEnviados = new Bandeja("Enviados");
+    
+    // Simulamos un correo que devuelve false al validar
+    const correoInvalidoMock = {
+      esValidoParaEnviar: () => false
+    } as any;
+
+    // Verificamos que la función frene la ejecución y lance el error
+    expect(() => {
+      enviarCorreo(correoInvalidoMock, bandejaEnviados);
+    }).toThrowError("El correo no es válido para ser enviado");
   });
 });

@@ -33,4 +33,24 @@ describe("S1-06: Envío de Correos", () => {
       enviarCorreo(correoInvalidoMock, bandejaEnviados);
     }).toThrowError("El correo no es válido para ser enviado");
   });
+
+  it("debe sacar el correo de la bandeja de Borradores al enviarlo", () => {
+    const bandejaEnviados = new Bandeja("Enviados");
+    const bandejaBorradores = new Bandeja("Borradores");
+    
+    const correoMock = { 
+      asunto: "Terminé el borrador", 
+      esValidoParaEnviar: () => true 
+    } as any;
+
+    // Metemos el correo en borradores primero
+    bandejaBorradores.agregarCorreo(correoMock);
+
+    // Ejecutamos el envío pasándole la bandeja de origen como tercer parámetro
+    enviarCorreo(correoMock, bandejaEnviados, bandejaBorradores);
+
+    // Verificamos que llegó a Enviados y que ya no está en Borradores
+    expect(bandejaEnviados.getCorreos()).toHaveLength(1);
+    expect(bandejaBorradores.getCorreos()).toHaveLength(0);
+  });
 });

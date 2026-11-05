@@ -69,5 +69,26 @@ describe("S1-06: Envío de Correos", () => {
     // Verificamos que en la bandeja solo esté guardado una vez
     expect(bandejaEnviados.getCorreos()).toHaveLength(1);
   })
+  
+  it("debe permitir el envío de un correo a múltiples destinatarios", () => {
+    const bandejaEnviados = new Bandeja("Enviados");
+    // Simulamos un arreglo con varios correos
+    const destinatariosMultiples = ["gabi@ucp.edu.ar", "profe@ucp.edu.ar", "tiago@ucp.edu.ar"];
+    
+    const correoMock = { 
+      asunto: "Entrega Trabajo Práctico TDD",
+      destinatarios: destinatariosMultiples,
+      esValidoParaEnviar: () => true 
+    } as any;
+
+    // Ejecutamos el envío
+    enviarCorreo(correoMock, bandejaEnviados);
+
+    // Verificamos que se guardó bien y que conservó a todos los destinatarios
+    const correosGuardados = bandejaEnviados.getCorreos();
+    expect(correosGuardados).toHaveLength(1);
+    expect(correosGuardados[0].destinatarios).toHaveLength(3);
+    expect(correosGuardados[0].destinatarios).toEqual(destinatariosMultiples);
+  });
 });
 

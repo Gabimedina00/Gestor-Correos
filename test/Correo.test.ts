@@ -49,4 +49,5 @@ describe ("Correo", () => {
         expect(sinAsunto.esValidoParaEnviar()).toBe(false);
         expect(sinDestinatarios.esValidoParaEnviar()).toBe(false);
     });
+    it("")
 });

@@ -3,7 +3,7 @@ import { Correo } from "../src/Correo.js";
 import { Contacto } from "../src/Contacto.js";
 import { Filtro } from "../src/Filtro.js";
 //funcion que fabrica la regla (predicado) del filtro, es un valor por eso va sin "type"
-import { remitenteDelDominio, asuntoContiene, y } from "../src/Predicados.js";
+import { remitenteDelDominio, asuntoContiene, y, o, no } from "../src/Predicados.js";
 
 const gabriel = new Contacto("Gabriel", "gabriel@ucp.edu.ar")
 const tiago = new Contacto("Tiago", "tiago00@yopmail.com")
@@ -32,5 +32,23 @@ describe("Filtro", () => {
         const filtroImportancia = new Filtro("Académico importante", y(remitenteDelDominio("@ucp.edu.ar"), asuntoContiene("Examen")))
 
         expect(filtroImportancia.aplicarFiltro([examenUcp, otroUcp, examenExterno])).toEqual([examenUcp]);
+    });
+
+    //falta el rf08 para poder marcar un correo como leído, por eso hago not en el remitente
+    // Esperamos que el OR acepte cualquiera de las dos palabras y el NOT excluya a los de la UCP.
+    it("Seguimiento externo: Proyecto o Reunion, y que no sea de la UCP", () => {
+        // Pasa: es de afuera y el asunto tiene "Proyecto".
+        const proyectoExterno = new Correo(tiago, [gabriel], "Proyecto final", "Avances del proyecto");
+        // Pasa: es de afuera y el asunto tiene "Reunion" (con una de las dos palabras alcanza).
+        const reunionExterno = new Correo(tiago, [gabriel], "Reunion martes", "Nos juntamos a las 18");
+        // No pasa: tiene "Proyecto" pero es de la UCP (lo excluye el NOT).
+        const proyectoUcp = new Correo(gabriel, [tiago], "Proyecto", "Entrega del proyecto");
+        // No pasa: es de afuera pero el asunto no tiene ninguna de las dos palabras.
+        const otroExterno = new Correo(tiago, [gabriel], "Hola", "Saludos");
+
+        // 'o' acepta cualquiera de las dos palabras; 'no' da vuelta la regla de la UCP; 'y' exige las dos cosas.
+        const filtroSeguimiento = new Filtro("Seguimiento externo", y(o(asuntoContiene("Proyecto"), asuntoContiene("Reunion")), no(remitenteDelDominio("@ucp.edu.ar"))));
+
+        expect(filtroSeguimiento.aplicarFiltro([proyectoExterno, reunionExterno, proyectoUcp, otroExterno])).toEqual([proyectoExterno, reunionExterno]);
     });
 });

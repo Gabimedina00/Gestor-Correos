@@ -13,7 +13,7 @@ const correo2 = new Correo(tiago, [gabriel], "Dominio Yopmail", "Dominio de corr
 
 describe("Filtro", () => {
     it("Filtra correo por remitente segun su dominio", () => {
-        const filtroUCP = new Filtro("Correo de dominio UCP", RemitenteDelDominio("@ucp.edu.ar"));
+        const filtroUCP = new Filtro("Correo de dominio UCP", remitenteDelDominio("@ucp.edu.ar"));
 
         // Esperamos que el filtro deje pasar solo los correos cuyo remitente es de la UCP.
         expect(filtroUCP.aplicarFiltro([correo1, correo2])).toEqual([correo1]);

@@ -25,7 +25,7 @@ jobs:
 
       - name: Verificar tipos (Typecheck)
         run: npm run typecheck
-
-      - name: Ejecutar Tests
-        run: npm test
-        # Forzar inicio de CI
+        
+      # Corre los tests y muestra qué porcentaje del código cubren
+      - name: Ejecutar tests con coverage
+        run: npm run test:coverage

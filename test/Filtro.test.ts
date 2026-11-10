@@ -8,7 +8,7 @@ import { remitenteDelDominio, asuntoContiene, y } from "../src/Predicados.js";
 const gabriel = new Contacto("Gabriel", "gabriel@ucp.edu.ar")
 const tiago = new Contacto("Tiago", "tiago00@yopmail.com")
 
-const correo1 = new Correo(gabriel, [tiago], "Examen UCP", "Probando filtros UCP");
+const correo1 = new Correo(gabriel, [tiago], "UCP", "Probando filtros UCP");
 const correo2 = new Correo(tiago, [gabriel], "Dominio Yopmail", "Dominio de correo diferente al de UCP");
 
 
@@ -31,6 +31,6 @@ describe("Filtro", () => {
 
         const filtroImportancia = new Filtro("Académico importante", y(remitenteDelDominio("@ucp.edu.ar"), asuntoContiene("Examen")))
 
-        expect(filtroImportancia.aplicarFiltro([examenUcp, otroUcp, examenExterno])).toEqual([correo1]);
+        expect(filtroImportancia.aplicarFiltro([examenUcp, otroUcp, examenExterno])).toEqual([examenUcp]);
     });
 });

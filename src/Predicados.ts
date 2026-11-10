@@ -8,3 +8,14 @@ export function remitenteDelDominio(dominio: string): Predicado {
     //endWith pregunta si termina con el dominio.
     return (correo: Correo) => correo.getRemitente().getEmail().endsWith(dominio);
 }
+
+//Fabrica un predicado: ¿el asunto del correo incluye texto?
+export function asuntoContiene(texto: string): Predicado {
+    //lee el asunto del correo y se fija si contiene el texto buscado
+    return (correo: Correo) => correo.getAsunto().includes(texto)
+}
+
+//combinador and: recibe dos predicados y devuelve uno nuevo que exige que se cumplan los dos
+export function y(a: Predicado, b: Predicado): Predicado {
+    return (correo: Correo) => a(correo) && b(correo);
+}

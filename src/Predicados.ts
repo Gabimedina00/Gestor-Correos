@@ -19,3 +19,13 @@ export function asuntoContiene(texto: string): Predicado {
 export function y(a: Predicado, b: Predicado): Predicado {
     return (correo: Correo) => a(correo) && b(correo);
 }
+
+//combinador or: si es cualquiera verdadera o ambas, devuelve valida (tienen que fallar ambas para que devuelva false)
+export function o(a: Predicado, b:Predicado): Predicado {
+    return (correo: Correo) => a(correo) || b(correo)
+}
+
+//devuelve valor contrario al que se le pasa
+export function no(a: Predicado): Predicado {
+    return (correo: Correo) => !a(correo)
+}

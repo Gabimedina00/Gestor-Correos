@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { Correo } from "../src/Correo.js";
 import { Contacto } from "../src/Contacto.js";
 import { Filtro } from "../src/Filtro.js";
-import { RemitenteDelDominio } from "../src/RemitenteDelDominio.js";
+//funcion que fabrica la regla (predicado) del filtro, es un valor por eso va sin "type"
+import { remitenteDelDominio } from "../src/Predicados.js";
 
 const gabriel = new Contacto("Gabriel", "gabriel@ucp.edu.ar")
 const tiago = new Contacto("Tiago", "tiago00@yopmail.com")
@@ -13,8 +14,9 @@ const correo2 = new Correo(tiago, [gabriel], "Dominio Yopmail", "Dominio de corr
 describe("Filtro", () => {
     it("Filtra correo por remitente segun su dominio", () => {
         const filtroUCP = new Filtro("Correo de dominio UCP", RemitenteDelDominio("@ucp.edu.ar"));
-     
-        expect(filtroUCP.filtrar(correo1)).toEqual(true);
-        expect(filtroUCP.filtrar(correo2)).toEqual(false);
+
+        // Esperamos que el filtro deje pasar solo los correos cuyo remitente es de la UCP.
+        expect(filtroUCP.aplicarFiltro([correo1, correo2])).toEqual([correo1]);
+       
     });
 });

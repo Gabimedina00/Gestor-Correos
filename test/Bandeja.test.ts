@@ -97,5 +97,22 @@ describe("RF-06: Bandejas y clasificación", () => {
     expect(bandejaEntrada.getCorreos()).toHaveLength(1);
     expect(bandejaEntrada.getCorreos()[0]).toBe(correoMock);
   });
+  it("debe buscar y devolver los correos que coincidan con el texto en el asunto o cuerpo", () => {
+    const bandeja = new Bandeja("Entrada");
+    
+    const correo1 = { asunto: "Reunión de proyecto", cuerpo: "Nos vemos a las 10" } as any;
+    const correo2 = { asunto: "Factura de luz", cuerpo: "Vence el viernes" } as any;
+    const correo3 = { asunto: "Notas TDD", cuerpo: "Avanzar con el proyecto final" } as any;
 
+    bandeja.agregarCorreo(correo1);
+    bandeja.agregarCorreo(correo2);
+    bandeja.agregarCorreo(correo3);
+
+    // Buscamos la palabra "proyecto" (debería encontrar el 1 y el 3)
+    const resultados = bandeja.buscarCorreos("proyecto");
+
+    expect(resultados).toHaveLength(2);
+    expect(resultados).toContain(correo1);
+    expect(resultados).toContain(correo3);
+  });
 });

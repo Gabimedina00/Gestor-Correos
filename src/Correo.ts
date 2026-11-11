@@ -29,6 +29,9 @@ export class Correo {
     getAsunto(): string { return this.asunto; }
     getCuerpo(): string { return this.cuerpo; }
     esLeido(): boolean { return this.leido; }
+    public marcarComoLeido(): void {
+    this.leido = true;
+  }
     esFavorito(): boolean { return this.favorito; }
     getId(): number { return this.id; }
     //devuelve una copia (doble encapsulamiento).

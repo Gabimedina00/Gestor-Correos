@@ -49,4 +49,17 @@ describe ("Correo", () => {
         expect(sinAsunto.esValidoParaEnviar()).toBe(false);
         expect(sinDestinatarios.esValidoParaEnviar()).toBe(false);
     });
+       // RF-08: Lectura de Correos
+  it("debe permitir marcar el correo como leído", () => {
+    const correo = new Correo(gabriel, [tiago], "Aviso", "Texto");
+    
+    // Verificamos el estado inicial (ya lo testeaste arriba, pero lo reconfirmamos)
+    expect(correo.esLeido()).toBe(false);
+    
+    // Cambiamos el estado
+    correo.marcarComoLeido();
+    
+    // Verificamos que ahora esté leído
+    expect(correo.esLeido()).toBe(true);
+  }); 
 });

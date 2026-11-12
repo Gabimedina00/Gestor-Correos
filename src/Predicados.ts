@@ -15,13 +15,20 @@ export function asuntoContiene(texto: string): Predicado {
     return (correo: Correo) => correo.getAsunto().includes(texto)
 }
 
+//fabrica el predicado: ¿el cuerpo tiene alguna de estas palabras? (sin importar mayusculas)
+export function cuerpoContieneAlguna(palabras: string[]): Predicado {
+    // some recorre las palabras y da true apenas una aparece en el cuerpo.
+    // toLowerCase en los dos lados: "examen", "Examen" y "EXAMEN" cuentan igual.
+    return (correo: Correo) => palabras.some(palabra => correo.getCuerpo().toLowerCase().includes(palabra.toLowerCase()));
+}
+
 //combinador and: recibe dos predicados y devuelve uno nuevo que exige que se cumplan los dos
 export function y(a: Predicado, b: Predicado): Predicado {
     return (correo: Correo) => a(correo) && b(correo);
 }
 
 //combinador or: si es cualquiera verdadera o ambas, devuelve valida (tienen que fallar ambas para que devuelva false)
-export function o(a: Predicado, b:Predicado): Predicado {
+export function o(a: Predicado, b: Predicado): Predicado {
     return (correo: Correo) => a(correo) || b(correo)
 }
 

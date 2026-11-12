@@ -3,7 +3,7 @@ import { Correo } from "../src/Correo.js";
 import { Contacto } from "../src/Contacto.js";
 import { Filtro } from "../src/Filtro.js";
 //funcion que fabrica la regla (predicado) del filtro, es un valor por eso va sin "type"
-import { remitenteDelDominio, asuntoContiene, y, o, no } from "../src/Predicados.js";
+import { remitenteDelDominio, asuntoContiene, y, o, no, cuerpoContieneAlguna } from "../src/Predicados.js";
 
 const gabriel = new Contacto("Gabriel", "gabriel@ucp.edu.ar")
 const tiago = new Contacto("Tiago", "tiago00@yopmail.com")
@@ -34,7 +34,6 @@ describe("Filtro", () => {
         expect(filtroImportancia.aplicarFiltro([examenUcp, otroUcp, examenExterno])).toEqual([examenUcp]);
     });
 
-    //falta el rf08 para poder marcar un correo como leído, por eso hago not en el remitente
     // Esperamos que el OR acepte cualquiera de las dos palabras y el NOT excluya a los de la UCP.
     it("Seguimiento externo: Proyecto o Reunion, y que no sea de la UCP", () => {
         // Pasa: es de afuera y el asunto tiene "Proyecto".
@@ -50,5 +49,25 @@ describe("Filtro", () => {
         const filtroSeguimiento = new Filtro("Seguimiento externo", y(o(asuntoContiene("Proyecto"), asuntoContiene("Reunion")), no(remitenteDelDominio("@ucp.edu.ar"))));
 
         expect(filtroSeguimiento.aplicarFiltro([proyectoExterno, reunionExterno, proyectoUcp, otroExterno])).toEqual([proyectoExterno, reunionExterno]);
+    });
+
+    // Esperamos que un mismo predicado se reutilice en filtros distintos
+    it("Reutiliza el predicado de la UCP en dos filtros distintos", () => {
+        //regla que debe cumplir el dominio del remitente
+        const deUcp = remitenteDelDominio("@ucp.edu.ar");
+
+        //4 correos para este filtro, usando combinadores para que controle entre varias palabras filtro
+        const examenUcp = new Correo(gabriel, [tiago], "Filtro de palabras de importancia academica", "examen ucp en 7 días");
+        const entregaUcp = new Correo(gabriel, [tiago], "Filtro Cuerpo", "Entrega en unos dias");
+        const otroUcp = new Correo(gabriel, [tiago], "Sin Examen,Entrega o Parcial en el cuerpo", "test");
+        const entregaExterna = new Correo(tiago, [gabriel], "Fail en dominio correo", "Entrega venció hace 24 hrs");
+
+        //Mismo predicado deUcp utilizado en dos filtros distintos
+        const filtroUcp = new Filtro("Correos de la UCP", deUcp);
+        const filtroAcademicos = new Filtro("Académicos de la UCP", y(deUcp, cuerpoContieneAlguna(["Entrega", "Examen", "Parcial"])));
+        const correos = [examenUcp, entregaUcp, otroUcp, entregaExterna];
+
+        expect(filtroUcp.aplicarFiltro([examenUcp, entregaUcp, otroUcp, entregaExterna])).toEqual([examenUcp, entregaUcp, otroUcp]);
+        expect(filtroAcademicos.aplicarFiltro(correos)).toEqual([examenUcp, entregaUcp]);
     });
 });

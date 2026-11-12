@@ -20,6 +20,7 @@ describe("Filtro", () => {
         expect(filtroUCP.aplicarFiltro([correo1, correo2])).toEqual([correo1]);
 
     });
+
     // Esperamos que el AND deje pasar solo los correos que cumplen las dos condiciones
     it("Correos academicos importantes: de la UCP y con examen en el asunto", () => {
         // Cumple las dos: es de la UCP y el asunto tiene "Examen".
@@ -69,5 +70,18 @@ describe("Filtro", () => {
 
         expect(filtroUcp.aplicarFiltro([examenUcp, entregaUcp, otroUcp, entregaExterna])).toEqual([examenUcp, entregaUcp, otroUcp]);
         expect(filtroAcademicos.aplicarFiltro(correos)).toEqual([examenUcp, entregaUcp]);
+    });
+
+    // Esperamos que los filtros por texto encuentren la palabra sin importar mayúsculas.
+    it("Los filtros por texto no distinguen mayusculas", () => {
+        // El asunto está en mayúsculas y la búsqueda en minúsculas.
+        const examenMayus = new Correo(gabriel, [tiago], "EXAMEN final", "Fecha del examen");
+
+        // Mismo correo, buscado por asunto y por dominio escritos distinto.
+        const filtroAsunto = new Filtro("Examenes", asuntoContiene("examen"));
+        const filtroDominio = new Filtro("UCP en mayúsculas", remitenteDelDominio("@UCP.edu.ar"));
+
+        expect(filtroAsunto.aplicarFiltro([examenMayus])).toEqual([examenMayus]);
+        expect(filtroDominio.aplicarFiltro([examenMayus])).toEqual([examenMayus]);
     });
 });

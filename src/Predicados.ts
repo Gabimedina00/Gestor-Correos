@@ -6,13 +6,13 @@ export type Predicado = (correo: Correo) => boolean;
 //Funcion de orden superior, recibe un dominio y devuelve un predicado
 export function remitenteDelDominio(dominio: string): Predicado {
     //endWith pregunta si termina con el dominio.
-    return (correo: Correo) => correo.getRemitente().getEmail().endsWith(dominio);
+    return (correo: Correo) => correo.getRemitente().getEmail().endsWith(dominio.toLowerCase());
 }
 
 //Fabrica un predicado: ¿el asunto del correo incluye texto?
 export function asuntoContiene(texto: string): Predicado {
-    //lee el asunto del correo y se fija si contiene el texto buscado
-    return (correo: Correo) => correo.getAsunto().includes(texto)
+    //lee el asunto del correo y se fija si contiene el texto buscado.toLower en ambos para que no importe como este escrito el asunto ni lo que se busca
+    return (correo: Correo) => correo.getAsunto().toLowerCase().includes(texto.toLowerCase());
 }
 
 //fabrica el predicado: ¿el cuerpo tiene alguna de estas palabras? (sin importar mayusculas)
@@ -29,10 +29,10 @@ export function y(a: Predicado, b: Predicado): Predicado {
 
 //combinador or: si es cualquiera verdadera o ambas, devuelve valida (tienen que fallar ambas para que devuelva false)
 export function o(a: Predicado, b: Predicado): Predicado {
-    return (correo: Correo) => a(correo) || b(correo)
+    return (correo: Correo) => a(correo) || b(correo);
 }
 
 //devuelve valor contrario al que se le pasa
 export function no(a: Predicado): Predicado {
-    return (correo: Correo) => !a(correo)
+    return (correo: Correo) => !a(correo);
 }

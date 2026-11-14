@@ -84,4 +84,25 @@ describe("Filtro", () => {
         expect(filtroAsunto.aplicarFiltro([examenMayus])).toEqual([examenMayus]);
         expect(filtroDominio.aplicarFiltro([examenMayus])).toEqual([examenMayus]);
     });
+
+    // Esperamos que un filtro sirva para cualquier lista y no cambie la original
+    it("aplicamos filtros a distintas listas sin modificarlas", () => {
+        const deTiago = new Correo(tiago, [gabriel], "Reunion", "Coordinamos");
+        const deGabriel1 = new Correo(gabriel, [tiago], "AE4", "avances");
+        const deGabriel2 = new Correo(gabriel, [tiago], "Consulta", "Duda al respecto");
+
+        // Dos listas distintas
+        const lista1 = [deTiago, deGabriel1]
+        const lista2 = [deGabriel1, deGabriel2]
+
+        // Nuevo filtro aplicado a las dos listas
+        const filtroUcp = new Filtro("Correos de la UCP", remitenteDelDominio("@ucp.edu.ar"));
+
+        expect(filtroUcp.aplicarFiltro(lista1)).toEqual([deGabriel1]);
+        expect(filtroUcp.aplicarFiltro(lista2)).toEqual([deGabriel1, deGabriel2]);
+
+        // filter devuelve una lista nueva, la original sigue con sus dos correos
+        expect(lista1).toHaveLength(2);
+
+    });
 });

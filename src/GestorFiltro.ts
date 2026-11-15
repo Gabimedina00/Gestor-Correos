@@ -17,6 +17,7 @@ export class GestorFiltro {
     }
 
     getFiltros(): Filtro[] {
-        return this.filtros
+        //devuelve la copia y no la lista original
+        return [...this.filtros];
     }
 }

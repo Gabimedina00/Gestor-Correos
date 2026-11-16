@@ -150,4 +150,42 @@ describe("RF-06: Bandejas y clasificación", () => {
     expect(resultados).toContain(correo1);
     expect(resultados).toContain(correo3);
   });
+  // Test Adicional Integrador: Envío múltiple e independencia de bandejas
+  it("debe mantener los correos en las otras bandejas si un destinatario lo elimina", () => {
+    // 1. Preparamos las bandejas del remitente y 3 destinatarios
+    const remitenteEnviados = new Bandeja("Enviados");
+    
+    const dest1Entrada = new Bandeja("Entrada");
+    const dest1Eliminados = new Bandeja("Eliminados"); // A donde va a ir a parar al borrarlo
+    
+    const dest2Entrada = new Bandeja("Entrada");
+    const dest3Entrada = new Bandeja("Entrada");
+
+    // 2. Creamos un correo de prueba simulando que va a 3 personas
+    const correoSimulado = { asunto: "Entrega Final", cuerpo: "Adjunto ZIP" } as any;
+
+    // 3. Simulamos la entrega del sistema (llega a Enviados y a la Entrada de los 3)
+    remitenteEnviados.agregarCorreo(correoSimulado);
+    dest1Entrada.agregarCorreo(correoSimulado);
+    dest2Entrada.agregarCorreo(correoSimulado);
+    dest3Entrada.agregarCorreo(correoSimulado);
+
+    // Verificamos que todos lo recibieron (Feedback de "ambas bandejas")
+    expect(remitenteEnviados.getCorreos()).toHaveLength(1);
+    expect(dest1Entrada.getCorreos()).toHaveLength(1);
+    expect(dest2Entrada.getCorreos()).toHaveLength(1);
+    expect(dest3Entrada.getCorreos()).toHaveLength(1);
+
+    // 4. El Destinatario 1 decide eliminar su copia del correo
+    dest1Entrada.eliminarCorreo(correoSimulado, dest1Eliminados);
+
+    // 5. Verificamos que el Destinatario 1 ya no lo tiene en Entrada, sino en Eliminados
+    expect(dest1Entrada.getCorreos()).toHaveLength(0);
+    expect(dest1Eliminados.getCorreos()).toHaveLength(1);
+
+    // 6. LO MÁS IMPORTANTE: Verificamos que las acciones del Dest. 1 NO afectaron al resto
+    expect(dest2Entrada.getCorreos()).toHaveLength(1);
+    expect(dest3Entrada.getCorreos()).toHaveLength(1);
+    expect(remitenteEnviados.getCorreos()).toHaveLength(1);
+  });
 });

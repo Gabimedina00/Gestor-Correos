@@ -10,7 +10,7 @@ describe ("Correo", () => {
     //Esperamos que el correo guarde sus datos y arranque sin leer y sin marcar como favorito.
     it("Crea correo con sus datos", () => {
         const correo = new Correo(gabriel, [tiago], "AE4","El AE4 es el martes");
-
+        
         //toBe: es el mismo objeto, toEqual: Tiene el mismo contenido.
         expect(correo.getRemitente()).toBe(gabriel);
         expect(correo.getDestinatarios()).toEqual([tiago]);
@@ -24,7 +24,7 @@ describe ("Correo", () => {
     it("Cada correo tiene su propio id", () => {
         const primero = new Correo(gabriel, [tiago], "Hola","primer correo");
         const segundo = new Correo(tiago, [gabriel], "Re: Hola","Segundo correo");
-       
+        
         expect(primero.getId()).not.toBe(segundo.getId());
     });
 
@@ -32,34 +32,52 @@ describe ("Correo", () => {
     it("los destinatarios no se pueden modificar desde afuera", () => {
         const destinatarios = [gabriel];
         const correo = new Correo(tiago, destinatarios, "Aviso", "Texto");
-
+        
         destinatarios.push(tiago);
         correo.getDestinatarios().push(tiago);
-
+        
         expect(correo.getDestinatarios()).toEqual([gabriel]);
     });
 
-      // Esperamos que solo sea válido para enviar si tiene asunto y al menos un destinatario.
+    // Esperamos que solo sea válido para enviar si tiene asunto y al menos un destinatario.
     it("solo es válido para enviar con asunto y destinatarios", () => {
         const completo = new Correo(gabriel, [tiago], "Examen", "Texto");
-        const sinAsunto = new Correo(gabriel, [tiago], "   ", "Texto");
+        const sinAsunto = new Correo(gabriel, [tiago], "  ", "Texto");
         const sinDestinatarios = new Correo(gabriel, [], "Examen", "Texto");
-
+        
         expect(completo.esValidoParaEnviar()).toBe(true);
         expect(sinAsunto.esValidoParaEnviar()).toBe(false);
         expect(sinDestinatarios.esValidoParaEnviar()).toBe(false);
     });
-       // RF-08: Lectura de Correos
-  it("debe permitir marcar el correo como leído", () => {
-    const correo = new Correo(gabriel, [tiago], "Aviso", "Texto");
-    
-    // Verificamos el estado inicial (ya lo testeaste arriba, pero lo reconfirmamos)
-    expect(correo.esLeido()).toBe(false);
-    
-    // Cambiamos el estado
-    correo.marcarComoLeido();
-    
-    // Verificamos que ahora esté leído
-    expect(correo.esLeido()).toBe(true);
-  }); 
+
+    // RF-08: Lectura de Correos
+    it("debe permitir marcar el correo como leído", () => {
+        const correo = new Correo(gabriel, [tiago], "Aviso", "Texto");
+        
+        // Verificamos el estado inicial (ya lo testeaste arriba, pero lo reconfirmamos)
+        expect(correo.esLeido()).toBe(false);
+        
+        // Cambiamos el estado
+        correo.marcarComoLeido();
+        
+        // Verificamos que ahora esté leído
+        expect(correo.esLeido()).toBe(true);
+    });
+
+    // RF-09: Correos Favoritos
+    it("debe permitir marcar y desmarcar un correo como favorito", () => {
+        const correo = new Correo(gabriel, [tiago], "Aviso importante", "No olvidar");
+        
+        // Verificamos que arranque sin ser favorito
+        expect(correo.esFavorito()).toBe(false);
+        
+        // Lo marcamos como favorito
+        correo.marcarComoFavorito();
+        expect(correo.esFavorito()).toBe(true);
+
+        // Lo desmarcamos
+        correo.desmarcarComoFavorito();
+        expect(correo.esFavorito()).toBe(false);
+    });
+
 });

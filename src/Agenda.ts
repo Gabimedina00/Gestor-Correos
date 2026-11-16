@@ -24,4 +24,12 @@ export class Agenda {
         }
         contacto.cambiarNombre(nuevoNombre);
     }
+
+    //saca de la agenda el contacto con ese email. Los correos no se tocan.
+    //Es agregación la agenda no es dueña del contacto. Al eliminarlo, la agenda deja de apuntarlo, pero el correo lo sigue apuntando.
+    //Asi el historial no se pierde
+    eliminar(email: string): void {
+        //filter arma una lista nueva sin ese contacto
+        this.contactos = this.contactos.filter(contacto => contacto.getEmail() !== email);
+    }
 }

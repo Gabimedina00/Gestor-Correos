@@ -134,9 +134,10 @@ describe("RF-06: Bandejas y clasificación", () => {
   it("debe buscar y devolver los correos que coincidan con el texto en el asunto o cuerpo", () => {
     const bandeja = new Bandeja("Entrada");
 
-    const correo1 = { asunto: "Reunión de proyecto", cuerpo: "Nos vemos a las 10" } as any;
-    const correo2 = { asunto: "Factura de luz", cuerpo: "Vence el viernes" } as any;
-    const correo3 = { asunto: "Notas TDD", cuerpo: "Avanzar con el proyecto final" } as any;
+    // Reemplazamos las propiedades estáticas por funciones getter en los mocks
+    const correo1 = { getAsunto: () => "Reunión de proyecto", getCuerpo: () => "Nos vemos a las 10" } as any;
+    const correo2 = { getAsunto: () => "Factura de luz", getCuerpo: () => "Vence el viernes" } as any;
+    const correo3 = { getAsunto: () => "Notas TDD", getCuerpo: () => "Avanzar con el proyecto final" } as any;
 
     bandeja.agregarCorreo(correo1);
     bandeja.agregarCorreo(correo2);

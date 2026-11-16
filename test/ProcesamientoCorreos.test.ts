@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { Correo } from "../src/Correo.js";
 import { Contacto } from "../src/Contacto.js";
-import { asuntosDe, correosQueCumplen } from "../src/Estadisticas.js";
+import { asuntosDe, correosQueCumplen } from "../src/ProcesamientoCorreos.js";
 import { asuntoContiene } from "../src/Predicados.js";
 
 const gabriel = new Contacto("Gabriel Medina", "gabmedina@ucp.edu.ar");
 const tiago = new Contacto("Tiago Meo Nielsen", "tiagoMN@ucp.edu.ar");
 
-describe("Estadisticas", () => {
+describe("Procesamiento Correos", () => {
     // Esperamos una lista con el asunto de cada correo, en el mismo orden
     it("Obtiene la lista de los asuntos con map", () => {
         //3 correos con asuntos distintos

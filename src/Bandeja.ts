@@ -55,4 +55,10 @@ export class Bandeja {
       destino.agregarCorreo(correo); // Lo agrega al destino
     }
   }
+  public obtenerFavoritos(): Correo[] {
+    // Filtramos la lista de correos quedándonos solo con los que son favoritos
+    return this.getCorreos().filter(correo => correo.esFavorito());
+  }
+
+
 }

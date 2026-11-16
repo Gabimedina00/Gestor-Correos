@@ -8,7 +8,7 @@ describe("Agenda",() =>{
         const agenda = new Agenda();
         const gabriel = new Contacto("gabriel", "gabmedina@ucp.edu.ar");
 
-        agenda.agregar(gabriel);
+        agenda.Agregar(gabriel);
 
         expect(agenda.buscarPorEmail("gabmedina@ucp.edu.ar")).toBe(gabriel);
     });

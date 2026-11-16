@@ -3,6 +3,7 @@ import { Contacto } from "../src/Contacto.js";
 import { Agenda } from "../src/Agenda.js"
 
 describe("Agenda", () => {
+
     //Esperamos que un contacto agregado se pueda encontrar por su email
     it("Agrega un contacto y lo encuentra por email", () => {
         const agenda = new Agenda();
@@ -12,6 +13,7 @@ describe("Agenda", () => {
 
         expect(agenda.buscarPorEmail("gabmedina@ucp.edu.ar")).toBe(gabriel);
     });
+    
     it("No permite dos contactos con el mismo email", () => {
         const agenda = new Agenda();
         const GabrielMedina = new Contacto("Gabriel Medina", "gabmedina@ucp.edu.ar");
@@ -21,4 +23,16 @@ describe("Agenda", () => {
 
         expect(() => agenda.Agregar(repetido)).toThrow();
     })
+
+    // Esperamos que se pueda cambiar el nombre de un contacto que ya está en la agenda.
+    it("Modifica el nombre de un contacto existente", () => {
+        const agenda = new Agenda();
+        const gabriel = new Contacto("Gabriel Medina", "gabmedina@ucp.edu.ar");
+        agenda.Agregar(gabriel);
+
+        // Se busca por email (que no cambia) y se modifica el nombre.
+        agenda.modificarNombre("gabmedina@ucp.edu.ar", "Gabi Medina");
+
+        expect(agenda.buscarPorEmail("gabmedina@ucp.edu.ar")?.getNombre()).toBe("Gabi Medina");
+    });
 });

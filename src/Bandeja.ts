@@ -40,12 +40,11 @@ export class Bandeja {
   } // <-- ¡Esta es la llave que faltaba para cerrar restaurarCorreo!
 
   public buscarCorreos(termino: string): Correo[] {
-    const terminoMinuscula = termino.toLowerCase();
-    
-    return this.correos.filter(correo => 
-      correo.asunto.toLowerCase().includes(terminoMinuscula) || 
-      correo.cuerpo.toLowerCase().includes(terminoMinuscula)
-    );
+      const terminoMinuscula = termino.toLowerCase();
+      return this.correos.filter(correo => 
+          correo.getAsunto().toLowerCase().includes(terminoMinuscula) ||
+          correo.getCuerpo().toLowerCase().includes(terminoMinuscula)
+      );
   }
   // Mueve el correo de esta bandeja a la bandeja de destino
   public moverCorreo(correo: Correo, destino: Bandeja): void {

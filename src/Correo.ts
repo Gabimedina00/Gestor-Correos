@@ -37,4 +37,8 @@ export class Correo {
     esValidoParaEnviar(): boolean {
         return this.asunto.trim().length > 0 && this.destinatarios.length > 0;
     }
+    // RF-07: un borrador se edita antes de enviarse.
+    cambiarAsunto(nuevoAsunto: string): void { this.asunto = nuevoAsunto; }
+    cambiarCuerpo(nuevoCuerpo: string): void { this.cuerpo = nuevoCuerpo; }
+    agregarDestinatario(destinatario: Contacto): void { this.destinatarios.push(destinatario); }
 }

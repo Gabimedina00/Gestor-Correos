@@ -10,7 +10,7 @@ describe("Agenda", () => {
         const agenda = new Agenda();
         const gabriel = new Contacto("gabriel", "gabmedina@ucp.edu.ar");
 
-        agenda.Agregar(gabriel);
+        agenda.agregar(gabriel);
 
         expect(agenda.buscarPorEmail("gabmedina@ucp.edu.ar")).toBe(gabriel);
     });
@@ -20,16 +20,16 @@ describe("Agenda", () => {
         const GabrielMedina = new Contacto("Gabriel Medina", "gabmedina@ucp.edu.ar");
         const repetido = new Contacto("Gabi", "GABMEDINA@UCP.EDU.AR");
 
-        agenda.Agregar(GabrielMedina);
+        agenda.agregar(GabrielMedina);
 
-        expect(() => agenda.Agregar(repetido)).toThrow();
+        expect(() => agenda.agregar(repetido)).toThrow();
     })
 
     // Esperamos que se pueda cambiar el nombre de un contacto que ya está en la agenda.
     it("Modifica el nombre de un contacto existente", () => {
         const agenda = new Agenda();
         const gabriel = new Contacto("Gabriel Medina", "gabmedina@ucp.edu.ar");
-        agenda.Agregar(gabriel);
+        agenda.agregar(gabriel);
 
         // Se busca por email (que no cambia) y se modifica el nombre.
         agenda.modificarNombre("gabmedina@ucp.edu.ar", "Gabi Medina");
@@ -42,7 +42,7 @@ describe("Agenda", () => {
         const gabriel = new Contacto("Gabriel Medina", "gabmedina@ucp.edu.ar");
         const tiago = new Contacto("Tiago Meo Nielsen", "tiagomn@ucp.edu.ar");
 
-        agenda.Agregar(gabriel);
+        agenda.agregar(gabriel);
 
         const correoViejo = new Correo(gabriel, [tiago], "TP", "Avance");
 

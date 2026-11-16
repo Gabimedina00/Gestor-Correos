@@ -19,4 +19,8 @@ export class Contacto {
     getEmail(): string {
         return this.email.getValor();
     }
+
+    cambiarNombre(nuevoNombre: string): void{
+        this.nombre = nuevoNombre;
+    }
 }

@@ -5,18 +5,47 @@ export class Bandeja {
   private correos: Correo[];
 
   constructor(nombre: string) {
+    const nombresPermitidos = ["Entrada", "Enviados", "Borradores", "Eliminados"];
+    
+    if (!nombresPermitidos.includes(nombre)) {
+      throw new Error("Nombre de bandeja no permitido");
+    }
+    
     this.nombre = nombre;
     this.correos = [];
   }
 
   public getCorreos(): Correo[] {
-    return this.correos;
+    return [...this.correos];
   }
 
-  public agregarCorreo(correo: Correo): void {
-    this.correos.push(correo);
+ public agregarCorreo(correo: Correo): void {
+    if (!this.correos.includes(correo)) {
+      this.correos.push(correo);
+    }
   }
+ public eliminarCorreo(correo: Correo, bandejaEliminados: Bandeja): void {
+    if (bandejaEliminados.nombre !== "Eliminados") {
+      throw new Error("El destino debe ser la bandeja de Eliminados");
+    }
+    
+    this.moverCorreo(correo, bandejaEliminados);
+  }
+ public restaurarCorreo(correo: Correo, destino: Bandeja): void {
+    if (this.nombre !== "Eliminados") {
+      throw new Error("Solo se pueden restaurar correos desde la bandeja de Eliminados");
+    }
+    
+    this.moverCorreo(correo, destino);
+  } // <-- ¡Esta es la llave que faltaba para cerrar restaurarCorreo!
 
+  public buscarCorreos(termino: string): Correo[] {
+      const terminoMinuscula = termino.toLowerCase();
+      return this.correos.filter(correo => 
+          correo.getAsunto().toLowerCase().includes(terminoMinuscula) ||
+          correo.getCuerpo().toLowerCase().includes(terminoMinuscula)
+      );
+  }
   // Mueve el correo de esta bandeja a la bandeja de destino
   public moverCorreo(correo: Correo, destino: Bandeja): void {
     const index = this.correos.indexOf(correo);
@@ -25,4 +54,10 @@ export class Bandeja {
       destino.agregarCorreo(correo); // Lo agrega al destino
     }
   }
+  public obtenerFavoritos(): Correo[] {
+    // Filtramos la lista de correos quedándonos solo con los que son favoritos
+    return this.getCorreos().filter(correo => correo.esFavorito());
+  }
+
+
 }

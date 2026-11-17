@@ -105,4 +105,16 @@ describe("Filtro", () => {
         expect(lista1).toHaveLength(2);
 
     });
+
+    // Esperamos que un cambio en el correo se vea en el filtro sin volver a crearlo (el filtro no guarda correos).
+    it("Los cambios en un correo se reflejan en el filtro", () => {
+        const correo = new Correo(gabriel, [tiago], "Examen", "Fecha del examen");
+        // Regla escrita como lambda: deja pasar los correos que todavía no se leyeron.
+        const noLeidos = new Filtro("No leídos", (c: Correo) => !c.esLeido());
+
+        expect(noLeidos.aplicarFiltro([correo])).toEqual([correo]);
+        correo.marcarComoLeido();
+        // Mismo filtro, misma lista: ahora el correo ya no pasa.
+        expect(noLeidos.aplicarFiltro([correo])).toEqual([]);
+    });
 });
